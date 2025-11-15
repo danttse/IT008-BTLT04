@@ -1,3 +1,5 @@
+using System.Media;
+using System.Threading.Tasks;
 using Timer = System.Windows.Forms.Timer;
 
 namespace BTLT04;
@@ -30,7 +32,7 @@ public partial class MainScreen : Form
         {
             // Initial position
             X = 100,
-            Y = 100,
+            Y = this.Height-220-38,
         };
         
         fire = new Sprite(
@@ -80,6 +82,7 @@ public partial class MainScreen : Form
             Invalidate();
         };
         timer.Start();
+        CreateBackGround();
     }
     
     private void OnKeyDown(object sender, KeyEventArgs e)
@@ -131,5 +134,79 @@ public partial class MainScreen : Form
         explosion.Dispose();
         monster.Dispose();
         base.OnFormClosed(e);
+    }
+
+    //PHAN BACKGROUND
+
+    SoundPlayer SoundMainScreen;
+    PictureBox pictureBox2= new PictureBox();
+    Timer TimeChangeGround = new Timer();
+    Timer TimeCount = new Timer();
+    int time=0;
+    int score=0;
+    int speedground = 80;//ms
+    void CreateBackGround()
+    {
+        PlaySoundOfMainScreen();
+        pictureBox2.Size=new Size(pictureBox1.Width, pictureBox1.Height);
+        pictureBox2.BackgroundImage=pictureBox1.BackgroundImage;
+        pictureBox1.Left = 0;
+        pictureBox2.Top = pictureBox1.Top;
+        pictureBox2.Left = pictureBox1.Right;
+        this.Controls.Add(pictureBox2);
+        TimeChangeGround.Interval= speedground;
+        TimeChangeGround.Tick += TimeChangeGround_Tick;
+        TimeChangeGround.Start();
+        TimeCount.Interval = 1000;
+        TimeCount.Tick += TimeCount_Tick;
+        TimeCount.Start();
+        GameOver();
+        //KHOA GAMEOVER() KHI CAN TEST NHAN VAT
+    }
+    void PlaySoundOfMainScreen()
+    {
+        SoundMainScreen= new SoundPlayer("Resources/MainScreenSound.wav");
+        SoundMainScreen.PlayLooping();
+    }
+
+    private void TimeChangeGround_Tick(object? sender, EventArgs e)
+    {
+        pictureBox1.Left -= 5;
+        pictureBox2.Left -= 5;
+        if (pictureBox1.Right<=0)
+        {
+            pictureBox1.Left = this.Width;
+        }
+        if (pictureBox2.Right<=0)
+        {
+            pictureBox2.Left = this.Width;
+        }
+    }
+    private void TimeCount_Tick(object? sender, EventArgs e)
+    {
+        ++time;
+        TimeBox.Text = "TIME: " + time.ToString();
+    }
+    //
+    //void GameOver()
+    //{
+    //    string date = DateTime.Now.ToString("dd/MM/yy HH:mm:ss");
+    //    Result results = new Result() { Time = date, PlayTime = time, Score = score };
+    //    ((StartScreen)this.Owner).AddItemToList(results);
+    //    GameOverScreen gameOverScreen = new GameOverScreen(results);
+    //    gameOverScreen.Show();
+    //    gameOverScreen.Owner = this.Owner;
+    //    this.Close();
+    //}
+    async Task GameOver()
+    {
+        await Task.Delay(10000);
+        string date = DateTime.Now.ToString("dd/MM/yy HH:mm:ss");
+        Result results = new Result() { Time = date, PlayTime = time, Score = score };
+        ((StartScreen)this.Owner).AddItemToList(results);
+        GameOverScreen gameOverScreen = new GameOverScreen(results);
+        gameOverScreen.Show();
+        gameOverScreen.Owner = this.Owner;
+        this.Close();
     }
 }

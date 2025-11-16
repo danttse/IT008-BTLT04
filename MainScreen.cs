@@ -1,5 +1,4 @@
 using System.Media;
-using System.Threading.Tasks;
 using Timer = System.Windows.Forms.Timer;
 
 namespace BTLT04;
@@ -7,22 +6,19 @@ namespace BTLT04;
 public partial class MainScreen : Form
 {
     private readonly Sprite player, fire, explosion;
-    private readonly List<Sprite> monster = new();
+    private readonly List<Sprite> monster = [];
     private readonly Timer timer;
     private const float MoveSpeed = 3;
     private bool keyUp;
     private bool keyDown;
-    private readonly int[] lanes = { 20, 140, 260 }; //Hang quai spawn
+    private readonly int[] lanes = [20, 140, 260]; //Hang quai spawn
     private readonly Random rnd = new Random();
-    private int maxMonsters;
-    private int spawnCooldown = 0;
-
-
+    private int spawnCooldown;
 
     public MainScreen()
     {
         InitializeComponent();
-        maxMonsters = rnd.Next(3, 11);
+        var maxMonsters = rnd.Next(3, 11);
         DoubleBuffered = true;
 
         // Khoi tao sprites
@@ -68,7 +64,7 @@ public partial class MainScreen : Form
         // Sprite animation timer
         timer = new Timer();
         timer.Interval = 14; // ~60 FPS
-        timer.Tick += (s, e) =>
+        timer.Tick += (_, _) =>
         {
             player.Update();
             fire.Update();
@@ -84,7 +80,7 @@ public partial class MainScreen : Form
                     monster.Add(CreateMonster());
                 }
             }
-            for (int i = monster.Count - 1; i >= 0; i--)
+            for (var i = monster.Count - 1; i >= 0; i--)
             {
                 var m = monster[i];
                 m.Update();
@@ -98,7 +94,7 @@ public partial class MainScreen : Form
                 //Khi quai cham tuong
                 if (m.X + 170 < 0)
                 {
-                    m.X = this.ClientSize.Width + rnd.Next(0, 400);
+                    m.X = ClientSize.Width + rnd.Next(0, 400);
                     m.Y = lanes[rnd.Next(lanes.Length)];
 
                     maxMonsters = rnd.Next(3, 11); //Tang do kho 
@@ -167,35 +163,31 @@ public partial class MainScreen : Form
 
     //PHAN BACKGROUND
 
-    SoundPlayer SoundMainScreen;
-    PictureBox pictureBox2= new PictureBox();
-    Timer TimeChangeGround = new Timer();
-    Timer TimeCount = new Timer();
-    int time=0;
-    int score=0;
-    int speedground = 80;//ms
-    void CreateBackGround()
+    private readonly SoundPlayer soundMainScreen = new SoundPlayer("Resources/MainScreenSound.wav");
+    private readonly PictureBox pictureBox2 = new PictureBox();
+    private readonly Timer timeChangeGround = new Timer();
+    private readonly Timer timeCount = new Timer();
+    private int time;
+    private int score;
+    private const int SpeedGround = 80; //ms
+
+    private void CreateBackGround()
     {
-        PlaySoundOfMainScreen();
-        pictureBox2.Size=new Size(pictureBox1.Width, pictureBox1.Height);
-        pictureBox2.BackgroundImage=pictureBox1.BackgroundImage;
+        soundMainScreen.PlayLooping();
+        pictureBox2.Size = new Size(pictureBox1.Width, pictureBox1.Height);
+        pictureBox2.BackgroundImage = pictureBox1.BackgroundImage;
         pictureBox1.Left = 0;
         pictureBox2.Top = pictureBox1.Top;
         pictureBox2.Left = pictureBox1.Right;
-        this.Controls.Add(pictureBox2);
-        TimeChangeGround.Interval= speedground;
-        TimeChangeGround.Tick += TimeChangeGround_Tick;
-        TimeChangeGround.Start();
-        TimeCount.Interval = 1000;
-        TimeCount.Tick += TimeCount_Tick;
-        TimeCount.Start();
+        Controls.Add(pictureBox2);
+        timeChangeGround.Interval = SpeedGround;
+        timeChangeGround.Tick += TimeChangeGround_Tick;
+        timeChangeGround.Start();
+        timeCount.Interval = 1000;
+        timeCount.Tick += TimeCount_Tick;
+        timeCount.Start();
         GameOver();
         //KHOA GAMEOVER() KHI CAN TEST NHAN VAT
-    }
-    void PlaySoundOfMainScreen()
-    {
-        SoundMainScreen= new SoundPlayer("Resources/MainScreenSound.wav");
-        SoundMainScreen.PlayLooping();
     }
 
     private void TimeChangeGround_Tick(object? sender, EventArgs e)
@@ -211,12 +203,13 @@ public partial class MainScreen : Form
             pictureBox2.Left = this.Width;
         }
     }
+    
     private void TimeCount_Tick(object? sender, EventArgs e)
     {
         ++time;
-        TimeBox.Text = "TIME: " + time.ToString();
+        TimeBox.Text = "TIME: " + time;
     }
-    //
+    
     //void GameOver()
     //{
     //    string date = DateTime.Now.ToString("dd/MM/yy HH:mm:ss");
@@ -227,17 +220,25 @@ public partial class MainScreen : Form
     //    gameOverScreen.Owner = this.Owner;
     //    this.Close();
     //}
-    async Task GameOver()
+    
+    private async Task GameOver()
     {
+        if (Owner is not StartScreen sc)
+        {
+            Close();
+            return;
+        }
+        
         await Task.Delay(10000);
-        string date = DateTime.Now.ToString("dd/MM/yy HH:mm:ss");
-        Result results = new Result() { Time = date, PlayTime = time, Score = score };
-        ((StartScreen)this.Owner).AddItemToList(results);
-        GameOverScreen gameOverScreen = new GameOverScreen(results);
+        var date = DateTime.Now.ToString("dd/MM/yy HH:mm:ss");
+        var results = new Result() { Time = date, PlayTime = time, Score = score };
+        sc.AddItemToList(results);
+        var gameOverScreen = new GameOverScreen(results);
         gameOverScreen.Show();
-        gameOverScreen.Owner = this.Owner;
-        this.Close();
+        gameOverScreen.Owner = sc;
+        Close();
     }
+    
     private Sprite CreateMonster()
     {
         var m = new Sprite(
@@ -247,21 +248,19 @@ public partial class MainScreen : Form
             Color.FromArgb(140, 180, 255)
         )
         {
-            SpeedX = -(float)rnd.Next(2, 7) //Tang toc quai ngau nhien
+            SpeedX = -rnd.Next(2, 7),
+            X = ClientSize.Width + rnd.Next(0, 100),
+            Y = lanes[rnd.Next(lanes.Length)] //Tang toc quai ngau nhien
         };
-
-        m.X = this.ClientSize.Width + rnd.Next(0, 100);
-
-        m.Y = lanes[rnd.Next(lanes.Length)];
 
         return m;
     }
-    private bool IsColliding(Sprite a, Sprite b)
+    
+    private static bool IsColliding(Sprite a, Sprite b)
     {
-        float dx = (a.X + a.frameWidth / 2) - (b.X + b.frameWidth / 2);
-        float dy = (a.Y + a.frameHeight / 2) - (b.Y + b.frameHeight / 2);
+        var dx = (a.X + a.frameWidth / 2.0) - (b.X + b.frameWidth / 2.0);
+        var dy = (a.Y + a.frameHeight / 2.0) - (b.Y + b.frameHeight / 2.0);
 
         return Math.Abs(dx) < 50 && Math.Abs(dy) < 50;
     }
-
 }

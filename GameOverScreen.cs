@@ -1,19 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Media;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
+﻿using System.Media;
 
 namespace BTLT04
 {
     public partial class GameOverScreen : Form
     {
-        public GameOverScreen(Result result):this()
+        public GameOverScreen(Result result)
         {
             TimePlayBox.Text += result.PlayTime.ToString();
             ScoreBox.Text += result.Score.ToString();
@@ -22,33 +13,33 @@ namespace BTLT04
         public GameOverScreen()
         {
             InitializeComponent();
-            MucsicGameOver();
+            PlayGameOverMusic();
             RestartButton.Click += RestartButton_Click;
             BackStartScreenButton.Click += BackStartScreenButton_Click;
         }
 
         private void BackStartScreenButton_Click(object? sender, EventArgs e)
         {
-            this.Owner.Show();
-            this.Close();
+            if (Owner == null) return;
+            Owner.Show();
+            Close();
         }
 
         private void RestartButton_Click(object? sender, EventArgs e)
         {
-            MainScreen mainScreen = new MainScreen();
+            var mainScreen = new MainScreen();
             mainScreen.Show();
-            mainScreen.Owner = this.Owner;
-            this.Close();
+            mainScreen.Owner = Owner;
+            Close();
         }
 
-        async Task MucsicGameOver()
+        private static async Task PlayGameOverMusic()
         {
-            SoundPlayer MusicGameOver=new SoundPlayer("Resources/SoundOfFail.wav");
-            MusicGameOver.Play();
+            var musicGameOver = new SoundPlayer("Resources/SoundOfFail.wav");
+            musicGameOver.Play();
             await Task.Delay(3000);
-            MusicGameOver=new SoundPlayer("Resources/MainScreenSound.wav");
-            MusicGameOver.PlayLooping();
+            musicGameOver = new SoundPlayer("Resources/MainScreenSound.wav");
+            musicGameOver.PlayLooping();
         }
-        
     }
 }

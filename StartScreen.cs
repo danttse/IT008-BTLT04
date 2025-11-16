@@ -40,6 +40,5 @@ namespace BTLT04
             mainScreen.Show();
             Hide();
         }
-
     }
 }

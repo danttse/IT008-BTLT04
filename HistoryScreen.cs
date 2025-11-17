@@ -8,6 +8,11 @@
         {
             this.results = results;
             HistoryTable.DataSource = results;
+            this.FormClosed += CloseHistory;
+        }
+        void CloseHistory(object sender, FormClosedEventArgs e)
+        {
+            Owner.Show();
         }
 
         public HistoryScreen()

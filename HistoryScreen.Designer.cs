@@ -86,6 +86,8 @@
             Text = "HistoryScreen";
             ((System.ComponentModel.ISupportInitialize)HistoryTable).EndInit();
             ResumeLayout(false);
+
+            StartPosition = FormStartPosition.CenterScreen;
         }
 
         #endregion

@@ -1,3 +1,4 @@
+using System.Data;
 using System.Media;
 using Timer = System.Windows.Forms.Timer;
 
@@ -68,17 +69,18 @@ public partial class MainScreen : Form
 
                     if (IsColliding(monster, player))
                     {
-                        monsters[i].Remove(monster);
-                        monster.Dispose();
-                        //GameOver();
+                        //monsters[i].Remove(monster);
+                        //monster.Dispose();
+                        GameOver();
                         continue;
                     }
 
                     if (monster.X + monster.FrameWidth < 0)
                     {
-                        monsters[i].Remove(monster);
-                        monster.Dispose();
-                        maxMonsters = rnd.Next(3, 11); //Tang do kho
+                        //monsters[i].Remove(monster);
+                        //monster.Dispose();
+                        //maxMonsters = rnd.Next(3, 11); //Tang do kho
+                        GameOver();
                     }
                 }
             }
@@ -92,6 +94,8 @@ public partial class MainScreen : Form
                     {
                         explosions.Add(CreateExplosion(monster.X + 70, monster.Y + 85));
                         fires.Remove(fire);
+                        score += 5;//Cong diem;
+                        UpDateScore();
                         fire.Dispose();
                         monsters[i].Remove(monster);
                         monster.Dispose();
@@ -196,7 +200,6 @@ public partial class MainScreen : Form
             fire.Dispose();
         foreach (var explosion in explosions)
             explosion.Dispose();
-
         base.OnFormClosed(e);
     }
 
@@ -208,7 +211,6 @@ public partial class MainScreen : Form
     private readonly Timer timeCount = new Timer();
     private int time;
     private int score;
-    private const int SpeedGround = 80; //ms
 
     private void CreateBackGround()
     {
@@ -216,8 +218,11 @@ public partial class MainScreen : Form
         timeCount.Interval = 1000;
         timeCount.Tick += TimeCount_Tick;
         timeCount.Start();
-        //GameOver();
-        //KHOA GAMEOVER() KHI CAN TEST NHAN VAT
+        UpDateScore();
+    }
+    void UpDateScore()
+    {
+        ScoreBox.Text="SCORE: "+score.ToString();
     }
 
     private void TimeCount_Tick(object? sender, EventArgs e)
@@ -226,35 +231,19 @@ public partial class MainScreen : Form
         TimeBox.Text = "TIME: " + time;
     }
 
-    //void GameOver()
-    //{
-    //    string date = DateTime.Now.ToString("dd/MM/yy HH:mm:ss");
-    //    Result results = new Result() { Time = date, PlayTime = time, Score = score };
-    //    ((StartScreen)this.Owner).AddItemToList(results);
-    //    GameOverScreen gameOverScreen = new GameOverScreen(results);
-    //    gameOverScreen.Show();
-    //    gameOverScreen.Owner = this.Owner;
-    //    this.Close();
-    //}
-
-    private async Task GameOver()
+    void GameOver()
     {
-        if (Owner is not StartScreen sc)
-        {
-            Close();
-            return;
-        }
-
-        await Task.Delay(10000);
-        var date = DateTime.Now.ToString("dd/MM/yy HH:mm:ss");
-        var results = new Result() { Time = date, PlayTime = time, Score = score };
-        sc.AddItemToList(results);
-        var gameOverScreen = new GameOverScreen(results);
-        gameOverScreen.Show();
+        string date = DateTime.Now.ToString("dd/MM/yy HH:mm:ss");
+        Result results = new Result() { Time = date, PlayTime = time, Score = score };
+        var sc = Owner as StartScreen;
+        if (sc != null) sc.AddItemToList(results);
+        GameOverScreen gameOverScreen = new GameOverScreen(results);
         gameOverScreen.Owner = sc;
-        Close();
+        gameOverScreen.Show();
+        timer.Stop();
+        timeCount.Stop();
+        this.Close();
     }
-
     private Sprite CreateMonster()
     {
         return new Sprite(

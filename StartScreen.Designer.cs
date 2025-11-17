@@ -28,45 +28,46 @@
         /// </summary>
         private void InitializeComponent()
         {
-            buttonStart = new System.Windows.Forms.Button();
-            buttonHistory = new System.Windows.Forms.Button();
+            buttonStart = new Button();
+            buttonHistory = new Button();
             SuspendLayout();
             // 
             // buttonStart
             // 
-            buttonStart.BackColor = System.Drawing.Color.FromArgb(((int)((byte)255)), ((int)((byte)255)), ((int)((byte)128)));
-            buttonStart.Font = new System.Drawing.Font("Microsoft Sans Serif", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)0));
-            buttonStart.Location = new System.Drawing.Point(281, 209);
+            buttonStart.BackColor = Color.FromArgb(255, 255, 128);
+            buttonStart.Font = new Font("Algerian", 18F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            buttonStart.Location = new Point(281, 209);
             buttonStart.Name = "buttonStart";
-            buttonStart.Size = new System.Drawing.Size(250, 60);
+            buttonStart.Size = new Size(250, 60);
             buttonStart.TabIndex = 0;
             buttonStart.Text = "START";
             buttonStart.UseVisualStyleBackColor = false;
             // 
             // buttonHistory
             // 
-            buttonHistory.BackColor = System.Drawing.Color.FromArgb(((int)((byte)255)), ((int)((byte)255)), ((int)((byte)128)));
-            buttonHistory.Font = new System.Drawing.Font("Microsoft Sans Serif", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)0));
-            buttonHistory.Location = new System.Drawing.Point(281, 295);
+            buttonHistory.BackColor = Color.FromArgb(255, 255, 128);
+            buttonHistory.Font = new Font("Algerian", 18F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            buttonHistory.Location = new Point(281, 295);
             buttonHistory.Name = "buttonHistory";
-            buttonHistory.Size = new System.Drawing.Size(250, 60);
+            buttonHistory.Size = new Size(250, 60);
             buttonHistory.TabIndex = 1;
             buttonHistory.Text = "HISTORY";
             buttonHistory.UseVisualStyleBackColor = false;
             // 
             // StartScreen
             // 
-            AutoScaleDimensions = new System.Drawing.SizeF(8F, 20F);
-            AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            BackColor = System.Drawing.SystemColors.Control;
-            BackgroundImage = global::BTLT04.Properties.Resources.StartScreenBackGround;
-            BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            ClientSize = new System.Drawing.Size(800, 450);
+            AutoScaleDimensions = new SizeF(8F, 20F);
+            AutoScaleMode = AutoScaleMode.Font;
+            BackColor = SystemColors.Control;
+            BackgroundImage = Properties.Resources.StartScreenBackGround;
+            BackgroundImageLayout = ImageLayout.Stretch;
+            ClientSize = new Size(800, 450);
             Controls.Add(buttonHistory);
             Controls.Add(buttonStart);
             DoubleBuffered = true;
-            FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
-            StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
+            FormBorderStyle = FormBorderStyle.FixedSingle;
+            Name = "StartScreen";
+            StartPosition = FormStartPosition.CenterScreen;
             Text = "StartScreen";
             ResumeLayout(false);
         }

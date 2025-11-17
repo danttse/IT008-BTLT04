@@ -29,46 +29,48 @@ partial class MainScreen
     /// </summary>
     private void InitializeComponent()
     {
-        TimeBox = new System.Windows.Forms.Label();
-        Score = new System.Windows.Forms.Label();
+        TimeBox = new Label();
+        ScoreBox = new Label();
         SuspendLayout();
         // 
         // TimeBox
         // 
-        TimeBox.BackColor = System.Drawing.Color.FromArgb(((int)((byte)255)), ((int)((byte)255)), ((int)((byte)128)));
-        TimeBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)0));
-        TimeBox.Location = new System.Drawing.Point(1050, 19);
+        TimeBox.BackColor = Color.FromArgb(255, 255, 128);
+        TimeBox.Font = new Font("Algerian", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
+        TimeBox.Location = new Point(1050, 19);
         TimeBox.Name = "TimeBox";
-        TimeBox.Size = new System.Drawing.Size(200, 35);
+        TimeBox.Size = new Size(200, 35);
         TimeBox.TabIndex = 1;
-        TimeBox.Text = "Time:";
-        TimeBox.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+        TimeBox.Text = "TIME:";
+        TimeBox.TextAlign = ContentAlignment.MiddleLeft;
         // 
-        // Score
+        // ScoreBox
         // 
-        Score.BackColor = System.Drawing.Color.FromArgb(((int)((byte)255)), ((int)((byte)255)), ((int)((byte)128)));
-        Score.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)0));
-        Score.Location = new System.Drawing.Point(1050, 71);
-        Score.Name = "Score";
-        Score.Size = new System.Drawing.Size(200, 35);
-        Score.TabIndex = 2;
-        Score.Text = "SCORE:";
-        Score.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+        ScoreBox.BackColor = Color.FromArgb(255, 255, 128);
+        ScoreBox.Font = new Font("Algerian", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
+        ScoreBox.Location = new Point(1050, 71);
+        ScoreBox.Name = "ScoreBox";
+        ScoreBox.Size = new Size(200, 35);
+        ScoreBox.TabIndex = 2;
+        ScoreBox.Text = "SCORE:";
+        ScoreBox.TextAlign = ContentAlignment.MiddleLeft;
         // 
         // MainScreen
         // 
-        AutoScaleDimensions = new System.Drawing.SizeF(8F, 20F);
-        AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-        BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-        ClientSize = new System.Drawing.Size(1262, 673);
-        Controls.Add(Score);
+        AutoScaleDimensions = new SizeF(8F, 20F);
+        AutoScaleMode = AutoScaleMode.Font;
+        BackgroundImage = Properties.Resources.BackgroundGame;
+        BackgroundImageLayout = ImageLayout.Stretch;
+        ClientSize = new Size(1262, 673);
+        Controls.Add(ScoreBox);
         Controls.Add(TimeBox);
-        StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
+        Name = "MainScreen";
+        StartPosition = FormStartPosition.CenterScreen;
         Text = "Form1";
         ResumeLayout(false);
     }
 
     #endregion
     private Label TimeBox;
-    private Label Score;
+    private Label ScoreBox;
 }

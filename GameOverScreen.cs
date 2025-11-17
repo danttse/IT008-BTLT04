@@ -16,12 +16,6 @@ namespace BTLT04
             PlayGameOverMusic();
             RestartButton.Click += RestartButton_Click;
             BackStartScreenButton.Click += BackStartScreenButton_Click;
-            FormClosed += GameOverScreen_FormClosed;
-        }
-
-        private void GameOverScreen_FormClosed(object? sender, FormClosedEventArgs e)
-        {
-            Owner.Show();
         }
 
         private void BackStartScreenButton_Click(object? sender, EventArgs e)

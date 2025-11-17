@@ -7,13 +7,13 @@ namespace BTLT04;
 public partial class MainScreen : Form
 {
     private readonly Sprite player;
-    private readonly List<List<Sprite>> monsters = [[], [], []]; // 3 lanes
+    private readonly List<List<Sprite>> monsters = [[], [], [], []]; // 5 lanes
     private readonly List<Sprite> fires = [], explosions = [];
     private readonly Timer timer;
     private const float MoveSpeed = 10;
     private bool keyUp;
     private bool keyDown;
-    private readonly int[] lanes = [20, 140, 260]; //Hang quai spawn
+    private readonly int[] lanes = [20, 180, 340, 500]; //Hang quai spawn
     private readonly Random rnd = new Random();
     private int spawnCooldown;
     private int DemHoiChieu = 50;
